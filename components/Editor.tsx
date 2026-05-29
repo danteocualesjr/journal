@@ -130,12 +130,12 @@ export default function Editor({
         <div className="mx-auto flex max-w-reading items-center justify-between px-6 py-3">
           <Link
             href="/"
-            className="font-sans text-xs font-medium uppercase tracking-label text-ink-faint transition-colors hover:text-ink"
+            className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint transition-colors hover:text-ink"
           >
             ← The Journal
           </Link>
           <div className="flex items-center gap-4">
-            <span className="font-sans text-xs text-ink-faint">
+            <span className="font-sans text-[11px] text-ink-faint">
               {isSaving
                 ? "Saving…"
                 : savedAt
@@ -145,7 +145,7 @@ export default function Editor({
             <button
               type="button"
               onClick={handleDelete}
-              className="font-sans text-xs font-medium uppercase tracking-label text-ink-faint transition-colors hover:text-accent"
+              className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint transition-colors hover:text-accent"
             >
               Delete
             </button>
@@ -153,7 +153,7 @@ export default function Editor({
               type="button"
               onClick={handlePublish}
               disabled={!canPublish}
-              className="rounded-full bg-accent px-4 py-1.5 font-sans text-xs font-medium uppercase tracking-label text-paper transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-40"
+              className="border border-accent bg-accent px-4 py-1.5 font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-paper transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:border-ink/20 disabled:bg-transparent disabled:text-ink-faint disabled:opacity-70"
             >
               {status === "published" ? "Update" : "Publish"}
             </button>
@@ -169,7 +169,7 @@ export default function Editor({
             value={title}
             onChange={(e) => handleTitleChange(e.target.value)}
             placeholder="Title"
-            className="mb-6 w-full bg-transparent font-serif text-4xl font-semibold leading-tight text-ink placeholder:text-ink-faint focus:outline-none"
+            className="mb-6 w-full bg-transparent font-serif text-4xl font-semibold leading-tight text-ink placeholder:italic placeholder:text-ink-faint focus:outline-none"
           />
           <EditorContent editor={editor} />
         </div>

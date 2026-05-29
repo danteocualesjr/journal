@@ -1,26 +1,33 @@
 import Link from "next/link";
 
-/** Grand, centered journal masthead used on the main reading page. */
+/** A title page, set after an old book's frontispiece. */
 export default function Masthead() {
+  const year = new Date().getFullYear();
+
   return (
-    <header className="border-b border-paper-line">
-      <div className="mx-auto flex max-w-feed flex-col items-center px-6 pb-8 pt-14 text-center">
-        <p className="label mb-3">A Journal of Thoughts</p>
-        <Link
-          href="/"
-          className="font-serif text-5xl font-semibold tracking-tight text-ink"
-        >
-          The Journal
-        </Link>
-        <p className="mt-3 font-serif text-lg italic text-ink-soft">
-          Notes, reflections, and whatever is on the mind.
-        </p>
+    <header className="relative px-6 pb-10 pt-10">
+      <div className="mx-auto flex max-w-reading justify-end">
         <Link
           href="/write"
-          className="mt-7 rounded-full border border-ink/15 bg-paper px-5 py-2 font-sans text-xs font-medium uppercase tracking-label text-ink transition-colors hover:border-ink/40"
+          className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint transition-colors hover:text-accent"
         >
-          Write an entry
+          ✎ Write
         </Link>
+      </div>
+
+      <div className="mx-auto mt-16 max-w-reading text-center">
+        <h1 className="title-display text-5xl sm:text-6xl">
+          The
+          <br />
+          Journal
+        </h1>
+        <p className="title-sub mt-6 text-xl">and other reflections</p>
+
+        <div className="mx-auto mt-10 flex max-w-[6rem] items-center justify-center">
+          <span className="h-px w-full bg-paper-line" />
+        </div>
+
+        <p className="label mt-10">Kept by hand · {year}</p>
       </div>
     </header>
   );

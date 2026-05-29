@@ -17,20 +17,20 @@ const config: Config = {
         ],
       },
       colors: {
-        // Warm paper + ink palette for a printed-journal feel.
+        // Aged paper + ink palette, like a yellowed old book.
         ink: {
-          DEFAULT: "#23201b",
-          soft: "#555047",
-          faint: "#8c857a",
+          DEFAULT: "#211c14",
+          soft: "#4a4334",
+          faint: "#8a7d63",
         },
         paper: {
-          DEFAULT: "#f7f3ea",
-          panel: "#efe9dc",
-          line: "#e0d8c8",
+          DEFAULT: "#ece2c9",
+          panel: "#e3d8bb",
+          line: "#cdbf9d",
         },
         accent: {
           DEFAULT: "#8a3a2c",
-          soft: "#e7d6c8",
+          soft: "#dcc9ad",
         },
       },
       letterSpacing: {

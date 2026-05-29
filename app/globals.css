@@ -11,29 +11,145 @@ body {
   height: 100%;
 }
 
+/* ---- The page: full-bleed, yellowed like an aged book leaf ---- */
 body {
-  @apply bg-paper text-ink font-serif antialiased;
-  font-feature-settings: "liga" 1, "onum" 1;
+  @apply text-ink font-serif antialiased;
+  background-color: #ece2c9;
+  background-image:
+    radial-gradient(145% 70% at 50% -12%, rgba(101, 73, 28, 0.20), rgba(101, 73, 28, 0) 55%),
+    radial-gradient(125% 80% at 50% 112%, rgba(101, 73, 28, 0.15), rgba(101, 73, 28, 0) 55%),
+    radial-gradient(70% 55% at 6% 22%, rgba(120, 92, 40, 0.10), transparent 60%),
+    radial-gradient(70% 55% at 94% 78%, rgba(120, 92, 40, 0.10), transparent 60%),
+    radial-gradient(100% 100% at 50% 45%, rgba(255, 250, 235, 0.45), rgba(255, 250, 235, 0) 70%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  font-feature-settings: "liga" 1, "onum" 1, "kern" 1;
+  text-rendering: optimizeLegibility;
 }
 
 @layer components {
-  /* Small uppercase sans label used for dates and section markers. */
+  /* Small caps-style sans label for dates and quiet UI text. */
   .label {
-    @apply font-sans text-[11px] font-medium uppercase tracking-label text-ink-faint;
+    @apply font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint;
   }
 
-  /* Thin underline link in the literary accent color. */
   .link-accent {
     @apply text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:decoration-accent;
   }
+
+  /* ---- Title page, after the C.S. Lewis frontispiece ---- */
+  .title-display {
+    @apply font-serif font-medium uppercase leading-[1.05] text-ink;
+    letter-spacing: 0.16em;
+  }
+  .title-sub {
+    @apply font-serif italic text-ink-soft;
+  }
+
+  /* ---- A chapter heading for each entry ---- */
+  .book-title {
+    @apply font-serif font-semibold uppercase leading-snug text-ink;
+    letter-spacing: 0.1em;
+  }
+  .book-date {
+    @apply font-serif italic text-ink-soft;
+  }
+
+  /* Centered floral ornament between entries. */
+  .ornament {
+    @apply flex items-center justify-center gap-4 text-ink-faint;
+  }
+  .ornament::before,
+  .ornament::after {
+    content: "";
+    @apply h-px w-16 bg-paper-line;
+  }
 }
 
-/* ---- Reading typography (shared by editor + published view) ---- */
+/* ---- Reading typography: justified, set like a printed book ---- */
+.book-prose {
+  @apply text-ink;
+  font-size: 1.2rem;
+  line-height: 1.62;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.book-prose p {
+  margin: 0;
+  text-indent: 1.5em;
+}
+/* First paragraph of an entry opens flush, like a chapter. */
+.book-prose > p:first-child {
+  text-indent: 0;
+}
+.book-prose h1,
+.book-prose h2,
+.book-prose h3 {
+  @apply font-serif font-semibold text-ink;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  margin-top: 1.4em;
+  margin-bottom: 0.3em;
+}
+.book-prose h1 {
+  font-size: 1.6rem;
+}
+.book-prose h2 {
+  font-size: 1.35rem;
+}
+.book-prose h3 {
+  font-size: 1.15rem;
+}
+.book-prose ul,
+.book-prose ol {
+  text-align: left;
+  hyphens: none;
+  margin: 0.8em 0;
+  padding-left: 1.6em;
+}
+.book-prose ul {
+  list-style: disc;
+}
+.book-prose ol {
+  list-style: decimal;
+}
+.book-prose li + li {
+  margin-top: 0.25em;
+}
+.book-prose blockquote {
+  @apply border-l-2 border-accent/40 italic text-ink-soft;
+  text-align: left;
+  hyphens: none;
+  margin: 1em 0;
+  padding-left: 1.25rem;
+}
+.book-prose code {
+  @apply rounded bg-paper-panel px-1.5 py-0.5 font-sans text-[0.85em];
+  hyphens: none;
+}
+.book-prose pre {
+  @apply rounded bg-paper-panel p-4 font-sans text-sm leading-relaxed;
+  text-align: left;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.book-prose pre code {
+  @apply bg-transparent p-0;
+}
+.book-prose a {
+  @apply link-accent;
+}
+
+/* ---- Editor writing surface (left-aligned for comfortable editing) ---- */
 .prose-journal {
-  @apply text-[1.15rem] leading-[1.75] text-ink;
+  @apply text-ink;
+  font-size: 1.2rem;
+  line-height: 1.6;
 }
 .prose-journal > * + * {
-  margin-top: 1.1em;
+  margin-top: 1em;
 }
 .prose-journal h1 {
   @apply font-serif text-3xl font-semibold leading-tight;
@@ -60,13 +176,10 @@ body {
   @apply rounded bg-paper-panel px-1.5 py-0.5 font-sans text-[0.85em];
 }
 .prose-journal pre {
-  @apply rounded-lg bg-paper-panel p-4 font-sans text-sm leading-relaxed overflow-x-auto;
+  @apply overflow-x-auto rounded bg-paper-panel p-4 font-sans text-sm leading-relaxed;
 }
 .prose-journal pre code {
   @apply bg-transparent p-0;
-}
-.prose-journal a {
-  @apply link-accent;
 }
 
 /* ---- Tiptap editor surface ---- */
@@ -81,12 +194,12 @@ body {
 /* Thin, subtle scrollbars */
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: #d8cfbe transparent;
+  scrollbar-color: #cdbf9d transparent;
 }
 .scrollbar-thin::-webkit-scrollbar {
   width: 8px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: #d8cfbe;
+  background-color: #cdbf9d;
   border-radius: 9999px;
 }
