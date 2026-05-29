@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-paper text-ink antialiased;
+}
+
+/* Tiptap editor typography */
+.ProseMirror {
+  @apply text-ink leading-relaxed outline-none;
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.85em;
+}
+
+.ProseMirror h1 {
+  @apply text-2xl font-semibold mt-2;
+}
+
+.ProseMirror h2 {
+  @apply text-xl font-semibold mt-2;
+}
+
+.ProseMirror h3 {
+  @apply text-lg font-semibold mt-2;
+}
+
+.ProseMirror ul {
+  @apply list-disc pl-6;
+}
+
+.ProseMirror ol {
+  @apply list-decimal pl-6;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-2 border-accent-soft pl-4 italic text-ink-soft;
+}
+
+.ProseMirror code {
+  @apply rounded bg-paper-panel px-1.5 py-0.5 text-[0.9em] font-mono;
+}
+
+.ProseMirror pre {
+  @apply rounded-lg bg-paper-panel p-3 font-mono text-sm overflow-x-auto;
+}
+
+.ProseMirror pre code {
+  @apply bg-transparent p-0;
+}
+
+.ProseMirror a {
+  @apply text-accent underline underline-offset-2;
+}
+
+/* Placeholder text for empty editor */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply text-ink-faint float-left h-0 pointer-events-none;
+}
+
+/* Thin, subtle scrollbars */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #d9d6cd transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #d9d6cd;
+  border-radius: 9999px;
+}
