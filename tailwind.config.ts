@@ -1,30 +1,44 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-  ],
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        serif: ["Georgia", "Cambria", "Times New Roman", "serif"],
+        serif: ["var(--font-serif)", "Georgia", "Cambria", "serif"],
+        sans: [
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+        ],
       },
       colors: {
+        // Warm paper + ink palette for a printed-journal feel.
         ink: {
-          DEFAULT: "#1f2430",
-          soft: "#4b5160",
-          faint: "#8a90a0",
+          DEFAULT: "#23201b",
+          soft: "#555047",
+          faint: "#8c857a",
         },
         paper: {
-          DEFAULT: "#fbfaf7",
-          panel: "#f3f1ec",
-          line: "#e7e4dc",
+          DEFAULT: "#f7f3ea",
+          panel: "#efe9dc",
+          line: "#e0d8c8",
         },
         accent: {
-          DEFAULT: "#b4632f",
-          soft: "#e9d8c8",
+          DEFAULT: "#8a3a2c",
+          soft: "#e7d6c8",
         },
+      },
+      letterSpacing: {
+        label: "0.18em",
+      },
+      maxWidth: {
+        reading: "38rem",
+        feed: "42rem",
       },
     },
   },

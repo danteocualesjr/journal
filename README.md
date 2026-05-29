@@ -1,13 +1,19 @@
-# Journal
+# The Journal
 
-A minimal, private personal journal. Write your daily thoughts with a clean rich text editor, browse entries grouped by date, and search instantly. Everything is stored locally in your browser, so nothing leaves your machine and no account is required.
+A minimal, private journal styled like a small literary publication. Write in a calm, distraction-free editor, hit Publish, and your entries appear in a reading feed on the main page. Everything is stored locally in your browser, so nothing leaves your machine and no account is required.
+
+## How it flows
+
+- **Main view** (`/`) — a literary front page: masthead, then your published entries as a reading feed, newest first. Unfinished drafts are listed quietly at the bottom.
+- **Editor view** (`/write`) — a clean writing surface with a title, rich text body, and autosave. Hitting **Publish** moves the entry into the main feed.
+- **Reading view** (`/entry/[id]`) — a single entry presented as an article, with an Edit link back to the editor.
 
 ## Features
 
 - Rich text editor (headings, bold/italic, lists, quotes, code) powered by Tiptap
-- Entries grouped by day: Today, Yesterday, then dated headers, newest first
-- Live search across titles and entry text
-- Autosave as you write, with a last-saved indicator
+- Draft → Publish workflow; published entries appear in the main reading feed
+- Drafts autosave as you write, with a last-saved indicator; empty drafts are discarded automatically
+- Literary typography (Newsreader serif) on a warm paper palette
 - Fully local persistence via `localStorage`
 
 ## Tech stack
@@ -34,25 +40,30 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 ```
 app/
-  layout.tsx       Root layout + global styles
-  page.tsx         Main journal screen (state + wiring)
-  globals.css      Tailwind + editor typography
+  layout.tsx          Root layout + Newsreader font
+  page.tsx            Main view: masthead + published feed + drafts
+  globals.css         Tailwind + literary typography
+  write/page.tsx      New entry (creates a draft, hands off to /write/[id])
+  write/[id]/page.tsx Edit a draft or published entry
+  entry/[id]/page.tsx Read a single entry
 components/
-  Sidebar.tsx      New Entry button, search, grouped list
-  EntryList.tsx    Date-grouped entry previews
-  EntryListItem.tsx
-  Editor.tsx       Tiptap editor, title, autosave, delete
-  Toolbar.tsx      Formatting controls
+  Masthead.tsx        Journal masthead on the main page
+  EntryFeed.tsx       Published entries as a reading feed
+  EditorView.tsx      Loads an entry and wires persist/publish/delete
+  Editor.tsx          Tiptap writing surface, autosave, Publish
+  Toolbar.tsx         Formatting controls
+  EntryView.tsx       Full-entry reading view
 lib/
-  types.ts         JournalEntry type
-  storage.ts       localStorage CRUD (the storage seam)
-  date.ts          Date grouping/formatting helpers
+  types.ts            JournalEntry type (draft | published)
+  storage.ts          localStorage CRUD + publish queries (the storage seam)
+  date.ts             Date formatting helpers
+  text.ts             Excerpts, plain-text, content checks
 ```
 
 ## Roadmap
 
-These are intentionally out of scope for v1 but easy to add later:
+These are intentionally out of scope but easy to add later:
 
 - Cloud sync / login (Supabase) via the `lib/storage.ts` seam
-- Tags, mood tracking, daily prompts, calendar view, export
+- Tags, mood tracking, daily prompts, search, export
 # journal

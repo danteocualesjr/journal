@@ -1,127 +1,85 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import type { JournalEntry } from "@/lib/types";
-import {
-  getEntries,
-  createEntry,
-  updateEntry,
-  deleteEntry,
-} from "@/lib/storage";
-import { htmlToText } from "@/lib/text";
-import Sidebar from "@/components/Sidebar";
-import Editor from "@/components/Editor";
+import { useEntries, selectPublished, selectDrafts } from "@/lib/store";
+import { entryTitle } from "@/lib/text";
+import { savedLabel } from "@/lib/date";
+import Masthead from "@/components/Masthead";
+import EntryFeed from "@/components/EntryFeed";
 
 export default function HomePage() {
-  const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
-  const [ready, setReady] = useState(false);
+  const entries = useEntries();
+  const published = useMemo(() => selectPublished(entries), [entries]);
+  const drafts = useMemo(() => selectDrafts(entries), [entries]);
 
-  // Load persisted entries once on mount (client-only).
-  useEffect(() => {
-    const loaded = getEntries();
-    setEntries(loaded);
-    setActiveId(loaded[0]?.id ?? null);
-    setReady(true);
-  }, []);
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return entries;
-    return entries.filter((entry) => {
-      const haystack = `${entry.title} ${htmlToText(entry.content)}`.toLowerCase();
-      return haystack.includes(q);
-    });
-  }, [entries, query]);
-
-  const activeEntry = useMemo(
-    () => entries.find((entry) => entry.id === activeId) ?? null,
-    [entries, activeId]
-  );
-
-  function handleNew() {
-    const entry = createEntry();
-    setEntries((prev) => [entry, ...prev]);
-    setActiveId(entry.id);
-    setQuery("");
-  }
-
-  function handleSelect(id: string) {
-    setActiveId(id);
-  }
-
-  function handlePersist(
-    id: string,
-    patch: Partial<Pick<JournalEntry, "title" | "content">>
-  ) {
-    const updated = updateEntry(id, patch);
-    if (!updated) return;
-    setEntries((prev) =>
-      prev.map((entry) => (entry.id === id ? updated : entry))
-    );
-  }
-
-  function handleDelete(id: string) {
-    deleteEntry(id);
-    setEntries((prev) => {
-      const next = prev.filter((entry) => entry.id !== id);
-      if (activeId === id) setActiveId(next[0]?.id ?? null);
-      return next;
-    });
-  }
+  // Avoid flashing the empty state before the store hydrates on the client.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
-    <main className="grid h-screen grid-cols-[300px_1fr] overflow-hidden">
-      <Sidebar
-        entries={filtered}
-        activeId={activeId}
-        query={query}
-        onQueryChange={setQuery}
-        onSelect={handleSelect}
-        onNew={handleNew}
-      />
+    <main className="min-h-screen">
+      <Masthead />
 
-      <section className="h-full overflow-hidden">
-        {!ready ? null : activeEntry ? (
-          <Editor
-            key={activeEntry.id}
-            entry={activeEntry}
-            onPersist={handlePersist}
-            onDelete={handleDelete}
-          />
+      <div className="mx-auto max-w-feed px-6 py-12">
+        {!mounted ? null : published.length === 0 ? (
+          <EmptyState />
         ) : (
-          <EmptyState onNew={handleNew} hasEntries={entries.length > 0} />
+          <EntryFeed entries={published} />
         )}
-      </section>
+
+        {mounted && drafts.length > 0 && <Drafts drafts={drafts} />}
+      </div>
+
+      <footer className="mx-auto max-w-feed px-6 pb-12 pt-4 text-center">
+        <p className="label">Written by hand · stored on this device</p>
+      </footer>
     </main>
   );
 }
 
-function EmptyState({
-  onNew,
-  hasEntries,
-}: {
-  onNew: () => void;
-  hasEntries: boolean;
-}) {
+function EmptyState() {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4 bg-paper px-6 text-center">
+    <div className="py-16 text-center">
       <h2 className="font-serif text-2xl font-semibold text-ink">
-        {hasEntries ? "Select an entry" : "Your journal is empty"}
+        The first page is blank
       </h2>
-      <p className="max-w-sm text-sm text-ink-soft">
-        {hasEntries
-          ? "Pick an entry from the left, or start a new one."
-          : "A quiet place for your thoughts. Start with whatever is on your mind today."}
+      <p className="mx-auto mt-3 max-w-sm font-serif text-lg italic text-ink-soft">
+        Every journal starts empty. Write something down and publish it to see
+        it appear here.
       </p>
-      <button
-        type="button"
-        onClick={onNew}
-        className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/90"
+      <Link
+        href="/write"
+        className="mt-7 inline-block rounded-full bg-accent px-6 py-2.5 font-sans text-xs font-medium uppercase tracking-label text-paper transition-colors hover:bg-accent/90"
       >
-        New Entry
-      </button>
+        Begin writing
+      </Link>
     </div>
+  );
+}
+
+function Drafts({ drafts }: { drafts: JournalEntry[] }) {
+  return (
+    <section className="mt-14 border-t border-paper-line pt-8">
+      <h3 className="label mb-4">Drafts · {drafts.length}</h3>
+      <ul className="space-y-2">
+        {drafts.map((draft) => (
+          <li key={draft.id}>
+            <Link
+              href={`/write/${draft.id}`}
+              className="group flex items-baseline justify-between gap-3 rounded-md px-2 py-1.5 transition-colors hover:bg-paper-panel"
+            >
+              <span className="truncate font-serif text-lg text-ink-soft group-hover:text-ink">
+                {entryTitle(draft.title, "Untitled draft")}
+              </span>
+              <span className="label shrink-0 normal-case tracking-normal">
+                edited {savedLabel(draft.updatedAt)}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

@@ -68,24 +68,26 @@ export default function Toolbar({ editor }: Props) {
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-1 border-b border-paper-line bg-paper/80 px-4 py-2 backdrop-blur">
-      {buttons.map((btn) => (
-        <button
-          key={btn.title}
-          type="button"
-          title={btn.title}
-          aria-pressed={btn.isActive()}
-          onClick={btn.run}
-          className={[
-            "min-w-[2rem] rounded px-2 py-1 text-sm font-medium transition-colors",
-            btn.isActive()
-              ? "bg-accent-soft text-ink"
-              : "text-ink-soft hover:bg-paper-panel",
-          ].join(" ")}
-        >
-          {btn.label}
-        </button>
-      ))}
+    <div className="border-t border-paper-line/70">
+      <div className="mx-auto flex max-w-reading flex-wrap items-center gap-1 px-5 py-1.5">
+        {buttons.map((btn) => (
+          <button
+            key={btn.title}
+            type="button"
+            title={btn.title}
+            aria-pressed={btn.isActive()}
+            onClick={btn.run}
+            className={[
+              "min-w-[2rem] rounded px-2 py-1 font-sans text-sm transition-colors",
+              btn.isActive()
+                ? "bg-accent-soft text-ink"
+                : "text-ink-soft hover:bg-paper-panel",
+            ].join(" ")}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

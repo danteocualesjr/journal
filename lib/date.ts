@@ -26,6 +26,15 @@ export function dayLabel(iso: string): string {
   });
 }
 
+/** Full literary date, e.g. "May 29, 2026". */
+export function longDate(iso: string): string {
+  return new Date(iso).toLocaleDateString(undefined, {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 /** Short time label, e.g. "1:24 PM". */
 export function timeLabel(iso: string): string {
   return new Date(iso).toLocaleTimeString(undefined, {

@@ -12,73 +12,81 @@ body {
 }
 
 body {
-  @apply bg-paper text-ink antialiased;
+  @apply bg-paper text-ink font-serif antialiased;
+  font-feature-settings: "liga" 1, "onum" 1;
 }
 
-/* Tiptap editor typography */
-.ProseMirror {
-  @apply text-ink leading-relaxed outline-none;
+@layer components {
+  /* Small uppercase sans label used for dates and section markers. */
+  .label {
+    @apply font-sans text-[11px] font-medium uppercase tracking-label text-ink-faint;
+  }
+
+  /* Thin underline link in the literary accent color. */
+  .link-accent {
+    @apply text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:decoration-accent;
+  }
 }
 
-.ProseMirror > * + * {
-  margin-top: 0.85em;
+/* ---- Reading typography (shared by editor + published view) ---- */
+.prose-journal {
+  @apply text-[1.15rem] leading-[1.75] text-ink;
 }
-
-.ProseMirror h1 {
-  @apply text-2xl font-semibold mt-2;
+.prose-journal > * + * {
+  margin-top: 1.1em;
 }
-
-.ProseMirror h2 {
-  @apply text-xl font-semibold mt-2;
+.prose-journal h1 {
+  @apply font-serif text-3xl font-semibold leading-tight;
 }
-
-.ProseMirror h3 {
-  @apply text-lg font-semibold mt-2;
+.prose-journal h2 {
+  @apply font-serif text-2xl font-semibold leading-tight;
 }
-
-.ProseMirror ul {
+.prose-journal h3 {
+  @apply font-serif text-xl font-semibold leading-snug;
+}
+.prose-journal ul {
   @apply list-disc pl-6;
 }
-
-.ProseMirror ol {
+.prose-journal ol {
   @apply list-decimal pl-6;
 }
-
-.ProseMirror blockquote {
-  @apply border-l-2 border-accent-soft pl-4 italic text-ink-soft;
+.prose-journal li + li {
+  margin-top: 0.3em;
 }
-
-.ProseMirror code {
-  @apply rounded bg-paper-panel px-1.5 py-0.5 text-[0.9em] font-mono;
+.prose-journal blockquote {
+  @apply border-l-2 border-accent/40 pl-5 italic text-ink-soft;
 }
-
-.ProseMirror pre {
-  @apply rounded-lg bg-paper-panel p-3 font-mono text-sm overflow-x-auto;
+.prose-journal code {
+  @apply rounded bg-paper-panel px-1.5 py-0.5 font-sans text-[0.85em];
 }
-
-.ProseMirror pre code {
+.prose-journal pre {
+  @apply rounded-lg bg-paper-panel p-4 font-sans text-sm leading-relaxed overflow-x-auto;
+}
+.prose-journal pre code {
   @apply bg-transparent p-0;
 }
-
-.ProseMirror a {
-  @apply text-accent underline underline-offset-2;
+.prose-journal a {
+  @apply link-accent;
 }
 
-/* Placeholder text for empty editor */
+/* ---- Tiptap editor surface ---- */
+.ProseMirror {
+  @apply outline-none;
+}
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
-  @apply text-ink-faint float-left h-0 pointer-events-none;
+  @apply pointer-events-none float-left h-0 italic text-ink-faint;
 }
 
 /* Thin, subtle scrollbars */
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: #d9d6cd transparent;
+  scrollbar-color: #d8cfbe transparent;
 }
 .scrollbar-thin::-webkit-scrollbar {
   width: 8px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: #d9d6cd;
+  background-color: #d8cfbe;
   border-radius: 9999px;
 }
