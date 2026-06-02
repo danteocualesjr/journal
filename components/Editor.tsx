@@ -132,7 +132,7 @@ export default function Editor({
             href="/"
             className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint transition-colors hover:text-ink"
           >
-            ← The Journal
+            ← Journal
           </Link>
           <div className="flex items-center gap-4">
             <span className="font-sans text-[11px] text-ink-faint">

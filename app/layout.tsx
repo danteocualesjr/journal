@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { EB_Garamond } from "next/font/google";
 import "./globals.css";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
+import { siteName, tagline } from "@/lib/site";
 
 const garamond = EB_Garamond({
   subsets: ["latin"],
@@ -12,8 +15,11 @@ const garamond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "The Journal",
-  description: "A quiet journal, set like the pages of an old book.",
+  title: {
+    default: siteName,
+    template: `%s · ${siteName}`,
+  },
+  description: tagline,
 };
 
 export default function RootLayout({
@@ -23,7 +29,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={garamond.variable}>
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <SiteNav />
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
+      </body>
     </html>
   );
 }

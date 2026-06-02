@@ -42,7 +42,7 @@ export default function EntryView({ entryId }: Props) {
           href="/"
           className="font-sans text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint transition-colors hover:text-accent"
         >
-          ← The Journal
+          ← Journal
         </Link>
         <Link
           href={`/write/${entry.id}`}
