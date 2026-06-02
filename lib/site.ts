@@ -19,7 +19,7 @@ export type ConnectLink = {
 };
 
 /** The wordmark shown in the nav. Change this to your own name. */
-export const siteName = "Dante Cuales";
+export const siteName = "Dante O. Cuales, Jr.";
 
 /** A short line that sits under your name on quiet pages and metadata. */
 export const tagline = "Founder, reader, and keeper of a journal.";
@@ -33,7 +33,7 @@ export const navItems: NavItem[] = [
 
 /** Links shown in the footer's Connect section. */
 export const connectLinks: ConnectLink[] = [
-  { label: "Email", href: "mailto:hello@example.com" },
-  { label: "X", href: "https://x.com/" },
-  { label: "GitHub", href: "https://github.com/" },
+  { label: "Email", href: "mailto:dante@nativestack.ai" },
+  { label: "X/Twitter", href: "https://x.com/danteocualesjr" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/danteocualesjr/" },
 ];
